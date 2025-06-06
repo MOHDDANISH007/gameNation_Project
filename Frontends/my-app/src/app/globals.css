@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+
+.custom-bg{ 
+  background-color: rgb(32, 33, 32);
+}
+
+body{
+  background-color: rgb(18, 19, 18);
+  color : white
+}
