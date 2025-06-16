@@ -17,7 +17,7 @@ export default function Home () {
   const [games, setGames] = useState([])
   const searchParams = useSearchParams()
   const query = searchParams.get('query')?.trim().toLowerCase()
-  const [cookie, setCookie] = useState(false)
+  const [cookie, setCookie] = useState(false) 
   const [showLoginPopup, setShowLoginPopup] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
