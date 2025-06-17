@@ -40,6 +40,7 @@ const NavBar = () => {
           method: 'GET',
           credentials: 'include'
         })
+
         if (!res.ok) {
           setUserName('')
           setFullName('')

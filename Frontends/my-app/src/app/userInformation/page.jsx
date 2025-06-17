@@ -53,6 +53,8 @@ const page = () => {
     fetchCart()
   }, [])
 
+  
+
   useEffect(() => {
     const fetchAllProductDetails = async () => {
       try {
@@ -122,6 +124,7 @@ const page = () => {
           method: 'GET',
           credentials: 'include'
         })
+        console.log('Response is Logout : ', res)
         if (!res.ok) {
           setUserName('')
           setFullName('')
@@ -177,8 +180,10 @@ const page = () => {
         credentials: 'include'
       })
 
+      console.log('Response from the Logout route is :', res)
+
       if (!res.ok) {
-        console.log("hey I am error ")
+        console.log('hey I am error ')
         console.error('Logout failed')
         throw new Error('Logout failed')
       }
@@ -190,6 +195,8 @@ const page = () => {
       setUserCart([])
       setProductsData([])
       router.push('/')
+      // refresh the page
+      window.location.href = '/'
     } catch (err) {
       console.error('Error logging out:', err)
       router.push('/')

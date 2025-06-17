@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem('user', JSON.stringify(userData))
       setUser(userData)
 
-      router.push('/') // redirect to home or dashboard
+      window.location.href = '/'
     } catch (err) {
       console.error('Login failed:', err.response?.data || err.message)
       alert(err.response?.data || 'Login error')
@@ -71,7 +71,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem('user', JSON.stringify(userData))
       setUser(userData)
 
-      router.push('/')
+      window.location.href = '/'
     } catch (err) {
       console.error('Signup failed:', err.response?.data || err.message)
       alert(err.response?.data || 'Signup error')

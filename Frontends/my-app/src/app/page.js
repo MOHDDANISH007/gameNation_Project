@@ -7,7 +7,6 @@ import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import Image from 'next/image'
 import { useAuth } from '@/context/AuthContext'
-import { NextResponse } from 'next/server'
 
 
 
@@ -19,7 +18,9 @@ export default function Home () {
   const query = searchParams.get('query')?.trim().toLowerCase()
   const [cookie, setCookie] = useState(false) 
   const [showLoginPopup, setShowLoginPopup] = useState(false)
+
   const [email, setEmail] = useState('')
+
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -43,7 +44,7 @@ export default function Home () {
 
     fetchData()
   }, [])
-  console.log(NextResponse)
+
 
   useEffect(() => {
     const checkCookie = async () => {
@@ -56,7 +57,7 @@ export default function Home () {
           const data = await res.json()
           console.log('Data from auth is :', data)
           setCookie(data.authenticated)
-          // Show popup after checking auth status
+          // Show popup after checking   auth status
           if (!data.authenticated) {
             setTimeout(() => setShowLoginPopup(true), 2000) // Show after 2 seconds
           }
