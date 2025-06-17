@@ -170,9 +170,11 @@ const NavBar = () => {
                 </span>
               </Link>
 
-              <span className='cursor-pointer hover:text-yellow-400 transition-colors duration-300'>
-                Ask AI
-              </span>
+              <Link href={'/askAI'}>
+                <span className='cursor-pointer hover:text-yellow-400 transition-colors duration-300'>
+                  Ask AI
+                </span>
+              </Link>
             </li>
           )}
 

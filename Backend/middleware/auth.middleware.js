@@ -6,6 +6,7 @@ dotenv.config({ path: '../.env' });
 
 const verifyToken = (req, res, next) => {
   const token = req.cookies.token; // <-- Get token from cookie
+  console.log("token : ", token); 
   
   if (!token) {
     return res.status(401).json({ message: "No token provided" });
