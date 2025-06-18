@@ -33,7 +33,7 @@ export const UserInformationProvider = ({ children }) => {
   useEffect(() => {
     const userInformation = async () => {
       try {
-        const res = await fetch('http://localhost:5000/userInformation/user-info', {
+        const res = await fetch('https://gamenation-project-backend.onrender.com/userInformation/user-info', {
           method: 'GET',
           credentials: 'include'
         })
