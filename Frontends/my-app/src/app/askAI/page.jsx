@@ -670,7 +670,7 @@ const AskAIPage = () => {
       >
         <div className='px-4 sm:p-6 max-w-4xl mx-auto'>
           <h1 className='text-2xl sm:text-3xl font-extrabold mb-6 text-blue-700'>
-            🔮 Ask Gemini AI
+            🔮 Ask GameNation AI
           </h1>
 
           <motion.div
