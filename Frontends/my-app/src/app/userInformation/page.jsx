@@ -38,7 +38,7 @@ const page = () => {
   useEffect(() => {
     const fetchCart = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/cart/user-cart', {
+        const res = await axios.get('https://gamenation-project-backend.onrender.com/cart/user-cart', {
           withCredentials: true
         })
         console.log('Cart Data is : ', res)
@@ -59,7 +59,7 @@ const page = () => {
       try {
         setLoading(true)
         const productPromises = userCart.map(item => {
-          const url = `http://localhost:5000/productsItems/${item.productType}/${item.productId}`
+          const url = `https://gamenation-project-backend.onrender.com/productsItems/${item.productType}/${item.productId}`
           return axios.get(url)
         })
 
@@ -161,7 +161,7 @@ const page = () => {
   const handleRemoveFromCart = async (productId, quantity, productType) => {
     try {
       await axios.post(
-        'http://localhost:5000/cart/remove',
+        'https://gamenation-project-backend.onrender.com/cart/remove',
         {
           productId,
           productQuantity: quantity,
