@@ -39,8 +39,8 @@ const Page = () => {
     const fetchProducts = async () => {
       try {
         setLoading(true)
-        const response = await fetch(`http://localhost:5000/products/${id}`)
-        const data = await response.json()
+        const response = await fetch(`https://gamenation-project-backend.onrender.com/products/${id}`)                    
+      const data = await response.json()
 
         const media = data.consoleDetails?.media || {}
         const imageArray = Object.values(media.images_by_color || {})
@@ -93,7 +93,7 @@ const Page = () => {
     console.log('Token:', token)
     try {
       const res = await axios.post(
-        'http://localhost:5000/cart/add',
+        'https://gamenation-project-backend.onrender.com/cart/add',
         {
           productId: id,
           quantity,
