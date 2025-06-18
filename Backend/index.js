@@ -34,7 +34,7 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 
-app.use("/ps4", ps4Routes);
+app.use("/  ", ps4Routes);
 app.use("/ps5", ps5Routes);
 app.use("/xboxOne", xboxOneRoutes);
 app.use("/xboxX", xboxXRoutes);
