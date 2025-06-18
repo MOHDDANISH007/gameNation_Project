@@ -11,7 +11,7 @@ export const DataProvider = ({ children }) => {
 
   const dataFromBackendForPS4 = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/ps4')
+      const res = await axios.get('https://gamenation-project-backend.onrender.com/ps4')
       return res.data
     } catch (error) {
       console.error('Error fetching ps4 data:', error)
@@ -21,7 +21,7 @@ export const DataProvider = ({ children }) => {
 
   const dataFromBackendForPS5 = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/ps5')
+      const res = await axios.get('https://gamenation-project-backend.onrender.com/ps5')
       return res.data
     } catch (error) {
       console.error('Error fetching ps5 data:', error)
@@ -31,7 +31,7 @@ export const DataProvider = ({ children }) => {
 
   const dataFromBackendForXbox_One = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/xboxOne')
+      const res = await axios.get('https://gamenation-project-backend.onrender.com/xboxOne')
       return res.data
     } catch (error) {
       console.error('Error fetching xbox one data:', error)
@@ -41,7 +41,7 @@ export const DataProvider = ({ children }) => {
 
   const dataFromBackendForXbox_X = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/xboxX')
+      const res = await axios.get('https://gamenation-project-backend.onrender.com/xboxX')
       return res.data
     } catch (error) {
       console.error('Error fetching xbox x data:', error)
@@ -51,7 +51,7 @@ export const DataProvider = ({ children }) => {
 
   const dataFromBackendForConsoles = async () =>{
     try{
-      const res = await axios.get("http://localhost:5000/products")
+      const res = await axios.get("https://gamenation-project-backend.onrender.com/products")
       return res.data
     }
     catch(error){
