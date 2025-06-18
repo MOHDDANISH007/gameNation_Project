@@ -11,6 +11,7 @@ const Page = () => {
   const [productsData, setProductsData] = useState([])
   const [image, setImage] = useState(null)
   const router = useRouter()
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     const fetchCart = async () => {
@@ -35,6 +36,7 @@ const Page = () => {
   useEffect(() => {
     const fetchAllProductDetails = async () => {
       try {
+        setLoading(true)
         const productPromises = userCart.map(item => {
           const url = `http://localhost:5000/productsItems/${item.productType}/${item.productId}`
           return axios.get(url)
@@ -61,6 +63,7 @@ const Page = () => {
           .filter(Boolean)
 
         setProductsData(combinedData)
+        setLoading(false)
       } catch (err) {
         console.error('Unexpected error in fetchAllProductDetails:', err)
       }
@@ -111,6 +114,17 @@ const Page = () => {
       console.error('Error removing from cart:', err)
     }
   }
+
+  // loading
+  if(loading){
+    return (
+        <div className="flex items-center justify-center min-h-screen bg-white">
+      <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-indigo-500"></div>
+      <p className="ml-4 text-lg text-gray-700 font-medium">Loading Cart...</p>
+    </div>
+    )
+  }
+ 
 
   return (
     <motion.div

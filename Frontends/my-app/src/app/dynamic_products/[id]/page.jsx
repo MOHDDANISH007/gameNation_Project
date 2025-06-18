@@ -12,7 +12,6 @@ import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import axios from 'axios'
 
-
 const Page = () => {
   const router = useRouter()
   const params = useParams()
@@ -26,7 +25,7 @@ const Page = () => {
   const [activeTab, setActiveTab] = useState('Overview')
   const [openFAQIndex, setOpenFAQIndex] = useState(null)
   const [quantity, setQuantity] = useState(0)
-  
+  const [loading, setLoading] = useState(false)
 
   const slugSegment = 'consoles'
 
@@ -39,6 +38,7 @@ const Page = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
+        setLoading(true)
         const response = await fetch(`http://localhost:5000/products/${id}`)
         const data = await response.json()
 
@@ -61,6 +61,7 @@ const Page = () => {
         setProducts(data.consoleDetails)
         setImages(imageArray)
         setVideos(videoArray)
+        setLoading(false)
       } catch (err) {
         console.error('Error fetching product:', err)
       }
@@ -70,6 +71,17 @@ const Page = () => {
       fetchProducts()
     }
   }, [id])
+
+  if (loading) {
+    return (
+      <div className='flex items-center justify-center min-h-screen bg-white'>
+        <div className='animate-spin rounded-full h-16 w-16 border-b-4 border-indigo-500'></div>
+        <p className='ml-4 text-lg text-gray-700 font-medium'>
+          Loading...
+        </p>
+      </div>
+    )
+  }
 
   function getCookieValue (name) {
     const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'))
@@ -99,7 +111,6 @@ const Page = () => {
       console.error('Error adding to cart:', error)
     }
   }
- 
 
   return (
     <motion.div

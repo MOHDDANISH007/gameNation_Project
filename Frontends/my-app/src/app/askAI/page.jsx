@@ -7,7 +7,18 @@ import remarkGfm from 'remark-gfm'
 import 'highlight.js/styles/github-dark.css'
 import { motion, AnimatePresence } from 'framer-motion'
 import { IoGameController } from 'react-icons/io5'
-import { Search, Send, History, ChevronDown, ChevronUp, Clock, User, Bot, Trash2, RefreshCw } from 'lucide-react'
+import {
+  Search,
+  Send,
+  History,
+  ChevronDown,
+  ChevronUp,
+  Clock,
+  User,
+  Bot,
+  Trash2,
+  RefreshCw
+} from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
 import ProductCard from '@/components/ProductCard'
@@ -83,13 +94,20 @@ const AskAIPage = () => {
   const [aiResponse, setAiResponse] = useState('')
   const [userID, setUserID] = useState('')
   const [userHistory, setUserHistory] = useState([])
-  
+  const [isLoading, setIsLoading] = useState(false)
+  const [loading, setLoading] = useState(false)
+
   // New state for history section
   const [showHistory, setShowHistory] = useState(false)
   const [selectedHistoryItem, setSelectedHistoryItem] = useState(null)
   const [isLoadingHistory, setIsLoadingHistory] = useState(false)
 
   console.log('UserHistory :', userHistory)
+  if (rootSlug === 'xbox_one') {
+    setRootSlug('xboxone')
+  } else if (rootSlug === 'xbox_x') {
+    setRootSlug('xboxx')
+  }
 
   useEffect(() => {
     if (loggedIn && userInfo?._id) {
@@ -152,6 +170,7 @@ const AskAIPage = () => {
 
   const handleToSubmit = async () => {
     if (!query.trim()) return
+    setIsLoading(true) // Start loading
     try {
       const res = await fetch('http://localhost:5000/askAI/post', {
         method: 'POST',
@@ -171,14 +190,16 @@ const AskAIPage = () => {
         setRootSlug('')
         setId('')
       }
-      // adding history at the current time
       setUserHistory(prev => [
         ...prev,
         { type: 'user', query, timestamp: new Date().toISOString() },
-        { type: 'ai', aiResponse: data.aiResponse, timestamp: new Date().toISOString() }
+        {
+          type: 'ai',
+          aiResponse: data.aiResponse,
+          timestamp: new Date().toISOString()
+        }
       ])
       setQuery('')
-      // refresh history after posting
       const histRes = await fetch(
         `http://localhost:5000/askAI/chatHistory/${userID}`,
         { credentials: 'include' }
@@ -187,11 +208,13 @@ const AskAIPage = () => {
       setUserHistory(histJson.userHistory?.messages || [])
     } catch (err) {
       console.error(err)
+    } finally {
+      setIsLoading(false) // End loading
     }
   }
 
   // Format timestamp for display
-  const formatTimestamp = (timestamp) => {
+  const formatTimestamp = timestamp => {
     if (!timestamp) return 'Just now'
     const date = new Date(timestamp)
     return date.toLocaleString('en-US', {
@@ -203,10 +226,12 @@ const AskAIPage = () => {
   }
 
   // Group history by date
-  const groupHistoryByDate = (history) => {
+  const groupHistoryByDate = history => {
     const grouped = {}
     history.forEach((item, index) => {
-      const date = item.timestamp ? new Date(item.timestamp).toDateString() : new Date().toDateString()
+      const date = item.timestamp
+        ? new Date(item.timestamp).toDateString()
+        : new Date().toDateString()
       if (!grouped[date]) grouped[date] = []
       grouped[date].push({ ...item, index })
     })
@@ -239,6 +264,11 @@ const AskAIPage = () => {
     } finally {
       setIsLoadingHistory(false)
     }
+  }
+  
+  // loading
+  if(loading) {
+    return <div>Loading...</div>
   }
 
   return (
@@ -306,20 +336,26 @@ const AskAIPage = () => {
                     <Clock className='text-purple-600' size={24} />
                   </div>
                   <div>
-                    <h2 className='text-xl font-bold text-gray-900'>Chat History</h2>
+                    <h2 className='text-xl font-bold text-gray-900'>
+                      Chat History
+                    </h2>
                     <p className='text-sm text-gray-600'>
-                      {userHistory.length} conversation{userHistory.length !== 1 ? 's' : ''}
+                      {userHistory.length} conversation
+                      {userHistory.length !== 1 ? 's' : ''}
                     </p>
                   </div>
                 </div>
-                
+
                 <div className='flex gap-2'>
                   <button
                     onClick={refreshHistory}
                     disabled={isLoadingHistory}
                     className='flex items-center gap-2 px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50'
                   >
-                    <RefreshCw size={16} className={isLoadingHistory ? 'animate-spin' : ''} />
+                    <RefreshCw
+                      size={16}
+                      className={isLoadingHistory ? 'animate-spin' : ''}
+                    />
                     Refresh
                   </button>
                   <button
@@ -341,54 +377,77 @@ const AskAIPage = () => {
                   <div className='mx-auto w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4'>
                     <History className='text-gray-400' size={24} />
                   </div>
-                  <h3 className='text-lg font-medium text-gray-900 mb-2'>No chat history yet</h3>
-                  <p className='text-gray-600'>Start a conversation to see your history here</p>
+                  <h3 className='text-lg font-medium text-gray-900 mb-2'>
+                    No chat history yet
+                  </h3>
+                  <p className='text-gray-600'>
+                    Start a conversation to see your history here
+                  </p>
                 </div>
               ) : (
                 <div className='grid grid-cols-1 lg:grid-cols-3 gap-6'>
                   {/* History List */}
                   <div className='lg:col-span-1 bg-white rounded-xl shadow-sm border border-gray-200 p-4 max-h-96 overflow-y-auto'>
-                    <h3 className='font-semibold text-gray-900 mb-3'>Recent Conversations</h3>
+                    <h3 className='font-semibold text-gray-900 mb-3'>
+                      Recent Conversations
+                    </h3>
                     <div className='space-y-2'>
-                      {Object.entries(groupHistoryByDate(userHistory)).map(([date, items]) => (
-                        <div key={date}>
-                          <p className='text-xs font-medium text-gray-500 mb-2 sticky top-0 bg-white py-1'>
-                            {date === new Date().toDateString() ? 'Today' : date}
-                          </p>
-                          {items.map((item) => (
-                            <motion.div
-                              key={item.index}
-                              onClick={() => setSelectedHistoryItem(item)}
-                              className={`p-3 rounded-lg cursor-pointer transition-all ${
-                                selectedHistoryItem?.index === item.index
-                                  ? 'bg-purple-50 border border-purple-200'
-                                  : 'bg-gray-50 hover:bg-gray-100'
-                              }`}
-                              whileHover={{ scale: 1.02 }}
-                              whileTap={{ scale: 0.98 }}
-                            >
-                              <div className='flex items-start gap-2'>
-                                <div className={`p-1 rounded ${
-                                  item.type === 'user' ? 'bg-blue-100' : 'bg-green-100'
-                                }`}>
-                                  {item.type === 'user' ? 
-                                    <User size={12} className='text-blue-600' /> : 
-                                    <Bot size={12} className='text-green-600' />
-                                  }
+                      {Object.entries(groupHistoryByDate(userHistory)).map(
+                        ([date, items]) => (
+                          <div key={date}>
+                            <p className='text-xs font-medium text-gray-500 mb-2 sticky top-0 bg-white py-1'>
+                              {date === new Date().toDateString()
+                                ? 'Today'
+                                : date}
+                            </p>
+                            {items.map(item => (
+                              <motion.div
+                                key={item.index}
+                                onClick={() => setSelectedHistoryItem(item)}
+                                className={`p-3 rounded-lg cursor-pointer transition-all ${
+                                  selectedHistoryItem?.index === item.index
+                                    ? 'bg-purple-50 border border-purple-200'
+                                    : 'bg-gray-50 hover:bg-gray-100'
+                                }`}
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                              >
+                                <div className='flex items-start gap-2'>
+                                  <div
+                                    className={`p-1 rounded ${
+                                      item.type === 'user'
+                                        ? 'bg-blue-100'
+                                        : 'bg-green-100'
+                                    }`}
+                                  >
+                                    {item.type === 'user' ? (
+                                      <User
+                                        size={12}
+                                        className='text-blue-600'
+                                      />
+                                    ) : (
+                                      <Bot
+                                        size={12}
+                                        className='text-green-600'
+                                      />
+                                    )}
+                                  </div>
+                                  <div className='flex-1 min-w-0'>
+                                    <p className='text-sm text-gray-900 truncate'>
+                                      {item.type === 'user'
+                                        ? item.query
+                                        : 'AI Response'}
+                                    </p>
+                                    <p className='text-xs text-gray-500'>
+                                      {formatTimestamp(item.timestamp)}
+                                    </p>
+                                  </div>
                                 </div>
-                                <div className='flex-1 min-w-0'>
-                                  <p className='text-sm text-gray-900 truncate'>
-                                    {item.type === 'user' ? item.query : 'AI Response'}
-                                  </p>
-                                  <p className='text-xs text-gray-500'>
-                                    {formatTimestamp(item.timestamp)}
-                                  </p>
-                                </div>
-                              </div>
-                            </motion.div>
-                          ))}
-                        </div>
-                      ))}
+                              </motion.div>
+                            ))}
+                          </div>
+                        )
+                      )}
                     </div>
                   </div>
 
@@ -401,17 +460,24 @@ const AskAIPage = () => {
                         className='space-y-4'
                       >
                         <div className='flex items-center gap-3 pb-4 border-b border-gray-200'>
-                          <div className={`p-2 rounded-lg ${
-                            selectedHistoryItem.type === 'user' ? 'bg-blue-100' : 'bg-green-100'
-                          }`}>
-                            {selectedHistoryItem.type === 'user' ? 
-                              <User className='text-blue-600' size={20} /> : 
+                          <div
+                            className={`p-2 rounded-lg ${
+                              selectedHistoryItem.type === 'user'
+                                ? 'bg-blue-100'
+                                : 'bg-green-100'
+                            }`}
+                          >
+                            {selectedHistoryItem.type === 'user' ? (
+                              <User className='text-blue-600' size={20} />
+                            ) : (
                               <Bot className='text-green-600' size={20} />
-                            }
+                            )}
                           </div>
                           <div>
                             <h3 className='font-semibold text-gray-900'>
-                              {selectedHistoryItem.type === 'user' ? 'Your Question' : 'AI Response'}
+                              {selectedHistoryItem.type === 'user'
+                                ? 'Your Question'
+                                : 'AI Response'}
                             </h3>
                             <p className='text-sm text-gray-600'>
                               {formatTimestamp(selectedHistoryItem.timestamp)}
@@ -432,18 +498,45 @@ const AskAIPage = () => {
                                 rehypePlugins={[rehypeHighlight]}
                                 remarkPlugins={[remarkGfm]}
                                 components={{
-                                  h1: props => <h1 className='text-2xl font-bold text-purple-700 mt-4 mb-2' {...props} />,
-                                  h2: props => <h2 className='text-xl font-semibold text-indigo-600 mt-3 mb-2' {...props} />,
-                                  h3: props => <h3 className='text-lg text-blue-500 mt-3 mb-1' {...props} />,
-                                  p: props => <p className='my-2 leading-relaxed text-gray-700' {...props} />,
+                                  h1: props => (
+                                    <h1
+                                      className='text-2xl font-bold text-purple-700 mt-4 mb-2'
+                                      {...props}
+                                    />
+                                  ),
+                                  h2: props => (
+                                    <h2
+                                      className='text-xl font-semibold text-indigo-600 mt-3 mb-2'
+                                      {...props}
+                                    />
+                                  ),
+                                  h3: props => (
+                                    <h3
+                                      className='text-lg text-blue-500 mt-3 mb-1'
+                                      {...props}
+                                    />
+                                  ),
+                                  p: props => (
+                                    <p
+                                      className='my-2 leading-relaxed text-gray-700'
+                                      {...props}
+                                    />
+                                  ),
                                   code: ({ children }) => (
                                     <code className='bg-gray-200 px-1 rounded text-sm text-red-500'>
                                       {children}
                                     </code>
                                   ),
-                                  li: props => <li className='ml-6 list-disc'>{props.children}</li>,
+                                  li: props => (
+                                    <li className='ml-6 list-disc'>
+                                      {props.children}
+                                    </li>
+                                  ),
                                   blockquote: props => (
-                                    <blockquote className='border-l-4 border-blue-400 pl-4 italic text-gray-600 my-4' {...props} />
+                                    <blockquote
+                                      className='border-l-4 border-blue-400 pl-4 italic text-gray-600 my-4'
+                                      {...props}
+                                    />
                                   )
                                 }}
                               >
@@ -456,9 +549,16 @@ const AskAIPage = () => {
                     ) : (
                       <div className='flex items-center justify-center h-64 text-gray-500'>
                         <div className='text-center'>
-                          <Clock size={48} className='mx-auto mb-4 opacity-50' />
-                          <p className='text-lg'>Select a conversation to view details</p>
-                          <p className='text-sm'>Click on any item from the history list</p>
+                          <Clock
+                            size={48}
+                            className='mx-auto mb-4 opacity-50'
+                          />
+                          <p className='text-lg'>
+                            Select a conversation to view details
+                          </p>
+                          <p className='text-sm'>
+                            Click on any item from the history list
+                          </p>
                         </div>
                       </div>
                     )}
@@ -633,6 +733,39 @@ const AskAIPage = () => {
           </motion.div>
 
           <div className='relative mt-8'>
+            <AnimatePresence>
+              {isLoading && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  className='flex flex-col items-center justify-center py-8'
+                >
+                  <motion.div
+                    animate={{
+                      scale: [1, 1.2, 1],
+                      rotate: [0, 10, -10, 0]
+                    }}
+                    transition={{
+                      repeat: Infinity,
+                      duration: 1.5,
+                      ease: 'easeInOut'
+                    }}
+                    className='text-indigo-600 mb-4'
+                  >
+                    <IoGameController size={48} />
+                  </motion.div>
+                  <motion.p
+                    animate={{ opacity: [0.6, 1, 0.6] }}
+                    transition={{ repeat: Infinity, duration: 2 }}
+                    className='text-gray-600 font-medium'
+                  >
+                    Crafting your gaming wisdom...
+                  </motion.p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
             <div className='flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4 p-4 bg-gray-50 rounded-2xl border border-gray-200 focus-within:border-indigo-300 focus-within:bg-white transition-all'>
               <Search className='h-5 w-5 text-gray-500' />
               <input
@@ -652,6 +785,8 @@ const AskAIPage = () => {
               >
                 <Send className='h-5 w-5' />
               </button>
+
+              {/* Add this right below your input section */}
             </div>
           </div>
         </div>
