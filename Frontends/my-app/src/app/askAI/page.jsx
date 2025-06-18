@@ -135,7 +135,8 @@ const AskAIPage = () => {
     const fetchDetails = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5000/productsItems/${rootSlug}/${id}`
+          `https://gamenation-project-backend.onrender.com/productsItems/                    
+  ${rootSlug}/${id}`
         )
         setProducts(res.data.game)
       } catch (err) {
@@ -151,7 +152,8 @@ const AskAIPage = () => {
       setIsLoadingHistory(true)
       try {
         const res = await fetch(
-          `http://localhost:5000/askAI/chatHistory/${userID}`,
+          `https://gamenation-project-backend.onrender.com/askAI/chatHistory/                    
+  ${userID}`,
           {
             method: 'GET',
             credentials: 'include'
@@ -172,7 +174,8 @@ const AskAIPage = () => {
     if (!query.trim()) return
     setIsLoading(true) // Start loading
     try {
-      const res = await fetch('http://localhost:5000/askAI/post', {
+      const res = await fetch('https://gamenation-project-backend.onrender.com/askAI/post'                    
+  , {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -201,7 +204,11 @@ const AskAIPage = () => {
       ])
       setQuery('')
       const histRes = await fetch(
-        `http://localhost:5000/askAI/chatHistory/${userID}`,
+        `https://gamenation-project-backend.onrender.com/askAI/chatHistory/                                                                                
+  
+  
+  
+  ${userID}`,
         { credentials: 'include' }
       )
       const histJson = await histRes.json()
@@ -254,7 +261,8 @@ const AskAIPage = () => {
     setIsLoadingHistory(true)
     try {
       const res = await fetch(
-        `http://localhost:5000/askAI/chatHistory/${userID}`,
+        `https://gamenation-project-backend.onrender.com/askAI/chatHistory/                    
+  ${userID}`,
         { credentials: 'include' }
       )
       const json = await res.json()
