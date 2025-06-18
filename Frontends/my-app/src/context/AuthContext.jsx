@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       const res = await axios.post(
-        'http://localhost:5000/authentication/login',
+        'https://gamenation-project-backend.onrender.com/authentication/login',
         {
           userEmail: email,
           userPassword: password
@@ -53,7 +53,7 @@ export const AuthProvider = ({ children }) => {
   const signup = async (name, email, password) => {
     try {
       const res = await axios.post(
-        'http://localhost:5000/authentication/signup',
+        'https://gamenation-project-backend.onrender.com/authentication/signup',
         {
           userName: name,
           userEmail: email,
