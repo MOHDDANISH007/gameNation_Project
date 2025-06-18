@@ -18,7 +18,8 @@ const Page = ({ params }) => {
     const fetchData = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5000/productsItems/${cart_category}/${cart_id}`
+          `https://gamenation-project-backend.onrender.com/productsItems/                    
+  ${cart_category}/${cart_id}`
         )
         setProducts(res.data.game)
       } catch (err) {
