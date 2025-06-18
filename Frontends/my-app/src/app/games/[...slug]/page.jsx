@@ -55,7 +55,7 @@ const Page = ({ params }) => {
       try {
         setLoading(true)
         const response = await axios.get(
-          `http://localhost:5000/${rootSlug}/${id}`
+          `https://gamenation-project-backend.onrender.com/${rootSlug}/${id}`
         )
         const details = response.data[`${rootSlug}Details`] // ✅ dynamic key
         console.log('details', details)
@@ -81,7 +81,7 @@ const Page = ({ params }) => {
 
     try {
       const res = await axios.post(
-        'http://localhost:5000/cart/add',
+        'https://gamenation-project-backend.onrender.com/cart/add',
         {
           productId: id,
           quantity,
