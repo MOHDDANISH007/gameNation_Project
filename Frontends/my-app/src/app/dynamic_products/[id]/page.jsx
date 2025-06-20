@@ -26,7 +26,7 @@ const Page = () => {
   const [openFAQIndex, setOpenFAQIndex] = useState(null)
   const [quantity, setQuantity] = useState(0)
   const [loading, setLoading] = useState(false)
-  const BASE_URL = 'http://localhost:5000'
+  const BASE_URL = 'https://gamenation-project-backend.onrender.com'
 
   const slugSegment = 'consoles'
 

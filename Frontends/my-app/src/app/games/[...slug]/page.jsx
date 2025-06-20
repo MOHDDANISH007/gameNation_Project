@@ -19,7 +19,7 @@ const Page = ({ params }) => {
   const [youtubeLink, setYoutubeLink] = useState('')
   const [openFAQIndex, setOpenFAQIndex] = useState(false)
   const [quantity, setQuantity] = useState(0)
-  const BASE_URL = 'http://localhost:5000'
+  const BASE_URL = 'https://gamenation-project-backend.onrender.com'
   console.log('games', games)
 
 

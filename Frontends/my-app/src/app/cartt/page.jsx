@@ -12,7 +12,7 @@ const Page = () => {
   const [image, setImage] = useState(null)
   const router = useRouter()
   const [loading, setLoading] = useState(false)
-  const BASE_URL = 'http://localhost:5000'
+  const BASE_URL = 'https://gamenation-project-backend.onrender.com'
 
   useEffect(() => {
     const fetchCart = async () => {

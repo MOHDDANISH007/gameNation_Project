@@ -10,7 +10,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
   const router = useRouter()
-  const BASE_URL = 'http://localhost:5000'
+  const BASE_URL = 'https://gamenation-project-backend.onrender.com'
 
   // Load user on mount
   useEffect(() => {

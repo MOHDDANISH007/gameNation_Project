@@ -4,7 +4,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react'
 
 // ✅ Now exported properly
 export const UserInformationContext = createContext()
-const BASE_URL = 'http://localhost:5000'
+const BASE_URL = 'https://gamenation-project-backend.onrender.com'
 
 export const UserInformationProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(false)

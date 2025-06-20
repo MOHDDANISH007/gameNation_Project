@@ -24,7 +24,7 @@ const page = () => {
   const router = useRouter()
   const { userInfo, loggedIn } = useContext(UserInformationContext)
   const [loading, setLoading] = useState(false)
-  const BASE_URL = 'http://localhost:5000'
+  const BASE_URL = 'https://gamenation-project-backend.onrender.com'
 
   console.log('User Cart Data is : ', userCart)
   console.log('Products Data is : ', productsData)
