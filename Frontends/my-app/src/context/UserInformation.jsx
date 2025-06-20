@@ -4,6 +4,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react'
 
 // ✅ Now exported properly
 export const UserInformationContext = createContext()
+const BASE_URL = 'http://localhost:5000'
 
 export const UserInformationProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(false)
@@ -33,10 +34,13 @@ export const UserInformationProvider = ({ children }) => {
   useEffect(() => {
     const userInformation = async () => {
       try {
-        const res = await fetch('https://gamenation-project-backend.onrender.com/userInformation/user-info', {
-          method: 'GET',
-          credentials: 'include'
-        })
+        const res = await fetch(
+          `${BASE_URL}/userInformation/user-info`,
+          {
+            method: 'GET',
+            credentials: 'include'
+          }
+        )
         console.log('User info from navbar', res)
         if (res.ok) {
           const data = await res.json()

@@ -10,6 +10,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
   const router = useRouter()
+  const BASE_URL = 'http://localhost:5000'
 
   // Load user on mount
   useEffect(() => {
@@ -24,7 +25,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       const res = await axios.post(
-        'https://gamenation-project-backend.onrender.com/authentication/login',
+        `${BASE_URL}/authentication/login`,
         {
           userEmail: email,
           userPassword: password
@@ -53,7 +54,7 @@ export const AuthProvider = ({ children }) => {
   const signup = async (name, email, password) => {
     try {
       const res = await axios.post(
-        'https://gamenation-project-backend.onrender.com/authentication/signup',
+        `${BASE_URL}/authentication/signup`,
         {
           userName: name,
           userEmail: email,

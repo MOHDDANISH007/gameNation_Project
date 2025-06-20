@@ -19,7 +19,9 @@ const Page = ({ params }) => {
   const [youtubeLink, setYoutubeLink] = useState('')
   const [openFAQIndex, setOpenFAQIndex] = useState(false)
   const [quantity, setQuantity] = useState(0)
+  const BASE_URL = 'http://localhost:5000'
   console.log('games', games)
+
 
   // if (rootSlug === 'xboxX') {
   //   rootSlug = 'xbox_x'
@@ -55,7 +57,7 @@ const Page = ({ params }) => {
       try {
         setLoading(true)
         const response = await axios.get(
-          `https://gamenation-project-backend.onrender.com/${rootSlug}/${id}`
+          `${BASE_URL}/${rootSlug}/${id}`
         )
         const details = response.data[`${rootSlug}Details`] // ✅ dynamic key
         console.log('details', details)
@@ -81,7 +83,7 @@ const Page = ({ params }) => {
 
     try {
       const res = await axios.post(
-        'https://gamenation-project-backend.onrender.com/cart/add',
+        `${BASE_URL}/cart/add`,
         {
           productId: id,
           quantity,

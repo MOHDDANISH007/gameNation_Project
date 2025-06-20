@@ -96,6 +96,7 @@ const AskAIPage = () => {
   const [userHistory, setUserHistory] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [loading, setLoading] = useState(false)
+  const BASE_URL = 'http://localhost:5000'
 
   // New state for history section
   const [showHistory, setShowHistory] = useState(false)
@@ -135,7 +136,7 @@ const AskAIPage = () => {
     const fetchDetails = async () => {
       try {
         const res = await axios.get(
-          `https://gamenation-project-backend.onrender.com/productsItems/${rootSlug}/${id}`
+          `${BASE_URL}/productsItems/${rootSlug}/${id}`
         )
         setProducts(res.data.game)
       } catch (err) {
@@ -150,13 +151,10 @@ const AskAIPage = () => {
     const fetchHistory = async () => {
       setIsLoadingHistory(true)
       try {
-        const res = await fetch(
-          `https://gamenation-project-backend.onrender.com/askAI/chatHistory/${userID}`,
-          {
-            method: 'GET',
-            credentials: 'include'
-          }
-        )
+        const res = await fetch(`${BASE_URL}/askAI/chatHistory/${userID}`, {
+          method: 'GET',
+          credentials: 'include'
+        })
         const json = await res.json()
         setUserHistory(json.userHistory?.messages || [])
       } catch (err) {
@@ -172,7 +170,7 @@ const AskAIPage = () => {
     if (!query.trim()) return
     setIsLoading(true) // Start loading
     try {
-      const res = await fetch('https://gamenation-project-backend.onrender.com/askAI/post', {
+      const res = await fetch(`${BASE_URL}/askAI/post`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -200,10 +198,9 @@ const AskAIPage = () => {
         }
       ])
       setQuery('')
-      const histRes = await fetch(
-        `https://gamenation-project-backend.onrender.com/askAI/chatHistory/${userID}`,
-        { credentials: 'include' }
-      )
+      const histRes = await fetch(`${BASE_URL}/askAI/chatHistory/${userID}`, {
+        credentials: 'include'
+      })
       const histJson = await histRes.json()
       setUserHistory(histJson.userHistory?.messages || [])
     } catch (err) {
@@ -253,10 +250,9 @@ const AskAIPage = () => {
     if (!userID) return
     setIsLoadingHistory(true)
     try {
-      const res = await fetch(
-        `https://gamenation-project-backend.onrender.com/askAI/chatHistory/${userID}`,
-        { credentials: 'include' }
-      )
+      const res = await fetch(`${BASE_URL}/askAI/chatHistory/${userID}`, {
+        credentials: 'include'
+      })
       const json = await res.json()
       setUserHistory(json.userHistory?.messages || [])
     } catch (err) {
@@ -265,9 +261,9 @@ const AskAIPage = () => {
       setIsLoadingHistory(false)
     }
   }
-  
+
   // loading
-  if(loading) {
+  if (loading) {
     return <div>Loading...</div>
   }
 

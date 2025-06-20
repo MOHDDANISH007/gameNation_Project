@@ -26,6 +26,7 @@ const Page = () => {
   const [openFAQIndex, setOpenFAQIndex] = useState(null)
   const [quantity, setQuantity] = useState(0)
   const [loading, setLoading] = useState(false)
+  const BASE_URL = 'http://localhost:5000'
 
   const slugSegment = 'consoles'
 
@@ -39,7 +40,7 @@ const Page = () => {
     const fetchProducts = async () => {
       try {
         setLoading(true)
-        const response = await fetch(`https://gamenation-project-backend.onrender.com/products/${id}`)                    
+        const response = await fetch(`${BASE_URL}/products/${id}`)                    
       const data = await response.json()
 
         const media = data.consoleDetails?.media || {}
@@ -93,7 +94,7 @@ const Page = () => {
     console.log('Token:', token)
     try {
       const res = await axios.post(
-        'https://gamenation-project-backend.onrender.com/cart/add',
+        `${BASE_URL}/cart/add`,
         {
           productId: id,
           quantity,

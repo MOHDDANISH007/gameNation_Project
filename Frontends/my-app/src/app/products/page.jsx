@@ -12,6 +12,7 @@ const Page = () => {
   const [localLoading, setLocalLoading] = useState(true) // Add local loading state
   const searchParams = useSearchParams()
   const query = searchParams.get('query')?.trim().toLowerCase()
+  
 
   useEffect(() => {
     let isMounted = true // Prevent state updates if component unmounts
