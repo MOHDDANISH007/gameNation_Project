@@ -26,9 +26,9 @@ console.log('Starting minimal server...');
 
 // cors
 app.use(cors({
-    origin: "http://localhost:3000",
+    origin: ["http://localhost:3000", "https://gamenation-project-frontend.onrender.com"],
     credentials: true
-}))
+})
 
 // Middleware
 app.use(express.json());
